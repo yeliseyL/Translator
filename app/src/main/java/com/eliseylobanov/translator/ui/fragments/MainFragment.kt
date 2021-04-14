@@ -22,13 +22,6 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
 
     private var adapter: MainAdapter? = null
 
-    private val onListItemClickListener: MainAdapter.OnListItemClickListener =
-        object : MainAdapter.OnListItemClickListener {
-            override fun onItemClick(data: DataModel) {
-                Toast.makeText(requireContext(), data.text, Toast.LENGTH_SHORT).show()
-            }
-        }
-
     override fun createPresenter(): MainPresenter<AppState, BaseView> {
         return MainPresenterImpl()
     }
@@ -59,10 +52,12 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
                 } else {
                     showViewSuccess()
                     if (adapter == null) {
+                        val adapter = MainAdapter(MainAdapter.OnClickListener {
+                            Toast.makeText(requireContext(), "Item clicked", Toast.LENGTH_SHORT).show()
+                        })
+                        adapter.submitList(dataModel)
                         binding.mainActivityRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-                        binding.mainActivityRecyclerview.adapter = MainAdapter(onListItemClickListener, dataModel)
-                    } else {
-                        adapter!!.setData(dataModel)
+                        binding.mainActivityRecyclerview.adapter = adapter
                     }
                 }
             }
