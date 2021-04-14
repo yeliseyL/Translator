@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.eliseylobanov.translator.R
 import com.eliseylobanov.translator.databinding.FragmentMainBinding
 import com.eliseylobanov.translator.model.AppState
-import com.eliseylobanov.translator.model.entities.DataModel
 import com.eliseylobanov.translator.presenter.MainPresenter
 import com.eliseylobanov.translator.presenter.MainPresenterImpl
 import com.eliseylobanov.translator.ui.MainAdapter
