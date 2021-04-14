@@ -31,7 +31,8 @@ class MainAdapter(private val onClickListener: OnClickListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): RecyclerItemViewHolder {
-        return RecyclerItemViewHolder(FragmentMainRecyclerviewItemBinding.inflate(LayoutInflater.from(parent.context)))
+        return RecyclerItemViewHolder(FragmentMainRecyclerviewItemBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
