@@ -5,36 +5,46 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eliseylobanov.translator.R
+import com.eliseylobanov.translator.app.TranslatorApp
 import com.eliseylobanov.translator.databinding.FragmentMainBinding
 import com.eliseylobanov.translator.model.AppState
-import com.eliseylobanov.translator.presenter.MainPresenter
-import com.eliseylobanov.translator.presenter.MainPresenterImpl
 import com.eliseylobanov.translator.ui.MainAdapter
 import com.eliseylobanov.translator.view.BaseFragment
-import com.eliseylobanov.translator.view.BaseView
+import javax.inject.Inject
 
 class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
 
+    @Inject
+    internal lateinit var viewmodelFactory: ViewModelProvider.Factory
+
     private lateinit var binding: FragmentMainBinding
 
-    private var adapter: MainAdapter? = null
-
-    override fun createPresenter(): MainPresenter<AppState, BaseView> {
-        return MainPresenterImpl()
+    val viewmodel: MainFragmentViewModel by lazy {
+        viewmodelFactory.create(MainFragmentViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        TranslatorApp.component.inject(this)
         binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        binding.viewmodel = viewmodel
+
+        val adapter = MainAdapter(MainAdapter.OnClickListener {
+            Toast.makeText(requireContext(), "Item clicked", Toast.LENGTH_SHORT).show()
+        })
+
+        binding.mainActivityRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.mainActivityRecyclerview.adapter = adapter
 
         binding.searchFab.setOnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object : SearchDialogFragment.OnSearchClickListener {
                 override fun onClick(searchWord: String) {
-                    presenter.getData(searchWord, true)
+                    viewmodel.getData(searchWord)
                 }
             })
             searchDialogFragment.show(requireActivity().supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
@@ -50,14 +60,6 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
                     showErrorScreen(getString(R.string.empty_server_response_on_success))
                 } else {
                     showViewSuccess()
-                    if (adapter == null) {
-                        val adapter = MainAdapter(MainAdapter.OnClickListener {
-                            Toast.makeText(requireContext(), "Item clicked", Toast.LENGTH_SHORT).show()
-                        })
-                        adapter.submitList(dataModel)
-                        binding.mainActivityRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-                        binding.mainActivityRecyclerview.adapter = adapter
-                    }
                 }
             }
             is AppState.Loading -> {
@@ -81,7 +83,7 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
         showViewError()
         binding.errorTextview.text = error ?: getString(R.string.undefined_error)
         binding.reloadButton.setOnClickListener {
-            presenter.getData("hi", true)
+            viewmodel.getData("hi")
         }
     }
 
