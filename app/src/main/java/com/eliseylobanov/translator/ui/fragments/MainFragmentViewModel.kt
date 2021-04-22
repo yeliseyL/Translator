@@ -2,15 +2,14 @@ package com.eliseylobanov.translator.ui.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.eliseylobanov.translator.model.AppState
 import com.eliseylobanov.translator.model.darasource.DataSource
 import com.eliseylobanov.translator.model.entities.DataModel
 import com.eliseylobanov.translator.ui.BaseViewModel
-import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableObserver
-import javax.inject.Inject
+import kotlinx.coroutines.launch
 
-class MainFragmentViewModel @Inject constructor(
+class MainFragmentViewModel(
         private val dataSourceRemote: DataSource<AppState>) : BaseViewModel<AppState>() {
 
     private val _results = MutableLiveData<List<DataModel>?>()
@@ -18,34 +17,11 @@ class MainFragmentViewModel @Inject constructor(
         get() = _results
 
     override fun getData(word: String) {
-        compositeDisposable.add(
-                dataSourceRemote.getData(word)
-                        .subscribeOn(schedulerProvider.io())
-                        .observeOn(schedulerProvider.ui())
-                        .doOnSubscribe(doOnSubscribe())
-                        .subscribeWith(getObserver())
-        )
-    }
-
-    private fun doOnSubscribe(): (Disposable) -> Unit =
-            { liveDataForViewToObserve.value = AppState.Loading(null) }
-
-    private fun getObserver(): DisposableObserver<AppState> {
-        return object : DisposableObserver<AppState>() {
-
-            override fun onNext(state: AppState) {
-                when (state) {
-                    is AppState.Success -> {
-                        _results.value = state.data
-                    }
+        viewModelScope.launch {
+            when (val state = dataSourceRemote.getData(word)) {
+                is AppState.Success -> {
+                    _results.value = state.data
                 }
-            }
-
-            override fun onError(e: Throwable) {
-                liveDataForViewToObserve.value = AppState.Error(e)
-            }
-
-            override fun onComplete() {
             }
         }
     }

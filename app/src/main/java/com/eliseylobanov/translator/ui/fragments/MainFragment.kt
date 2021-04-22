@@ -5,33 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eliseylobanov.translator.R
-import com.eliseylobanov.translator.app.TranslatorApp
 import com.eliseylobanov.translator.databinding.FragmentMainBinding
 import com.eliseylobanov.translator.model.AppState
 import com.eliseylobanov.translator.ui.MainAdapter
 import com.eliseylobanov.translator.view.BaseFragment
-import javax.inject.Inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
 
-    @Inject
-    internal lateinit var viewmodelFactory: ViewModelProvider.Factory
-
     private lateinit var binding: FragmentMainBinding
 
-    val viewmodel: MainFragmentViewModel by lazy {
-        viewmodelFactory.create(MainFragmentViewModel::class.java)
-    }
+    val viewModel: MainFragmentViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        TranslatorApp.component.inject(this)
         binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        binding.viewmodel = viewmodel
+        binding.viewmodel = viewModel
 
         val adapter = MainAdapter(MainAdapter.OnClickListener {
             Toast.makeText(requireContext(), "Item clicked", Toast.LENGTH_SHORT).show()
@@ -44,7 +36,7 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object : SearchDialogFragment.OnSearchClickListener {
                 override fun onClick(searchWord: String) {
-                    viewmodel.getData(searchWord)
+                    viewModel.getData(searchWord)
                 }
             })
             searchDialogFragment.show(requireActivity().supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
@@ -83,7 +75,7 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
         showViewError()
         binding.errorTextview.text = error ?: getString(R.string.undefined_error)
         binding.reloadButton.setOnClickListener {
-            viewmodel.getData("hi")
+            viewModel.getData("hi")
         }
     }
 
