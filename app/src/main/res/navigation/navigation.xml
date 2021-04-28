@@ -9,5 +9,18 @@
         android:id="@+id/mainFragment"
         android:name="com.eliseylobanov.translator.ui.fragments.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_showDetail"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.eliseylobanov.translator.ui.fragments.DetailsFragment"
+        android:label="DetailsFragment" >
+        <argument
+            android:name="word"
+            app:argType="com.eliseylobanov.translator.model.entities.DataModel"
+            app:nullable="true" />
+    </fragment>
 </navigation>

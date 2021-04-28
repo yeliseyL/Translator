@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eliseylobanov.translator.R
 import com.eliseylobanov.translator.databinding.FragmentMainBinding
@@ -26,7 +27,7 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
         binding.viewmodel = viewModel
 
         val adapter = MainAdapter(MainAdapter.OnClickListener {
-            Toast.makeText(requireContext(), "Item clicked", Toast.LENGTH_SHORT).show()
+            viewModel.displayWordDetails(it)
         })
 
         binding.mainActivityRecyclerview.layoutManager = LinearLayoutManager(requireContext())
@@ -41,6 +42,14 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
             })
             searchDialogFragment.show(requireActivity().supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
         }
+
+        viewModel.navigateToSelectedWord.observe(viewLifecycleOwner, {
+            if (null != it) {
+                this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+                viewModel.displayWordDetailsComplete()
+            }
+        })
+
         return binding.root
     }
 

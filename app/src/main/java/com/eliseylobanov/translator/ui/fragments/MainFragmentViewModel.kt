@@ -12,6 +12,10 @@ import kotlinx.coroutines.launch
 class MainFragmentViewModel(
         private val dataSourceRemote: DataSource<AppState>) : BaseViewModel<AppState>() {
 
+    private val _navigateToSelectedWord = MutableLiveData<DataModel?>()
+    val navigateToSelectedWord: LiveData<DataModel?>
+        get() = _navigateToSelectedWord
+
     private val _results = MutableLiveData<List<DataModel>?>()
     val results: LiveData<List<DataModel>?>
         get() = _results
@@ -24,5 +28,13 @@ class MainFragmentViewModel(
                 }
             }
         }
+    }
+
+    fun displayWordDetails(word: DataModel) {
+        _navigateToSelectedWord.value = word
+    }
+
+    fun displayWordDetailsComplete() {
+        _navigateToSelectedWord.value = null
     }
 }
