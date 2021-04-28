@@ -7,7 +7,6 @@ import com.eliseylobanov.translator.model.AppState
 import com.eliseylobanov.translator.model.darasource.DataSource
 import com.eliseylobanov.translator.model.darasource.DataSourceLocal
 import com.eliseylobanov.translator.model.entities.DataModel
-import com.eliseylobanov.translator.model.repository.RepositoryLocal
 import com.eliseylobanov.translator.ui.BaseViewModel
 import kotlinx.coroutines.launch
 

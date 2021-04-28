@@ -2,7 +2,6 @@ package com.eliseylobanov.translator.ui.fragments
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eliseylobanov.translator.R

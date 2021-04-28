@@ -1,6 +1,5 @@
 package com.eliseylobanov.translator.model.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao

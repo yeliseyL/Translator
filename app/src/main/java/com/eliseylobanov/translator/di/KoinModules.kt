@@ -9,8 +9,6 @@ import com.eliseylobanov.translator.model.darasource.DataSourceRemote
 import com.eliseylobanov.translator.model.database.RoomDataBaseImplementation
 import com.eliseylobanov.translator.model.database.WordDatabase
 import com.eliseylobanov.translator.model.entities.DataModel
-import com.eliseylobanov.translator.model.repository.RepositoryImplementationLocal
-import com.eliseylobanov.translator.model.repository.RepositoryLocal
 import com.eliseylobanov.translator.model.retrofit.RetrofitImplementation
 import com.eliseylobanov.translator.ui.fragments.HistoryViewModel
 import com.eliseylobanov.translator.ui.fragments.MainFragmentViewModel

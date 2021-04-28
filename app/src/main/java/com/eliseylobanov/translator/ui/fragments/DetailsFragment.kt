@@ -1,10 +1,10 @@
 package com.eliseylobanov.translator.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.eliseylobanov.translator.R
 import com.eliseylobanov.translator.databinding.FragmentDetailsBinding
 

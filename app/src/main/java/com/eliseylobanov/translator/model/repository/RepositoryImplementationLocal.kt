@@ -1,6 +1,5 @@
 package com.eliseylobanov.translator.model.repository
 
-import com.eliseylobanov.translator.model.AppState
 import com.eliseylobanov.translator.model.darasource.DataSourceLocal
 import com.eliseylobanov.translator.model.entities.DataModel
 
