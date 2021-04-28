@@ -14,6 +14,12 @@ fun bindRecyclerView(recyclerView: RecyclerView, data: List<DataModel>?) {
     adapter.submitList(data)
 }
 
+@BindingAdapter("listHistoryData")
+fun bindHistoryRecyclerView(recyclerView: RecyclerView, data: List<DataModel>?) {
+    val adapter = recyclerView.adapter as HistoryAdapter
+    adapter.submitList(data)
+}
+
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {

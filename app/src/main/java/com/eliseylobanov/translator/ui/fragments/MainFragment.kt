@@ -1,9 +1,7 @@
 package com.eliseylobanov.translator.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,6 +48,8 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
             }
         })
 
+        setHasOptionsMenu(true)
+
         return binding.root
     }
 
@@ -85,6 +85,21 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
         binding.errorTextview.text = error ?: getString(R.string.undefined_error)
         binding.reloadButton.setOnClickListener {
             viewModel.getData("hi")
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_history, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_history -> {
+                this.findNavController().navigate(MainFragmentDirections.actionMainFragmentToHistoryFragment())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

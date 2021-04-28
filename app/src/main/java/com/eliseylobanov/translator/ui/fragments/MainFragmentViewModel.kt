@@ -5,12 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eliseylobanov.translator.model.AppState
 import com.eliseylobanov.translator.model.darasource.DataSource
+import com.eliseylobanov.translator.model.darasource.DataSourceLocal
 import com.eliseylobanov.translator.model.entities.DataModel
+import com.eliseylobanov.translator.model.repository.RepositoryLocal
 import com.eliseylobanov.translator.ui.BaseViewModel
 import kotlinx.coroutines.launch
 
 class MainFragmentViewModel(
-        private val dataSourceRemote: DataSource<AppState>) : BaseViewModel<AppState>() {
+        private val dataSourceRemote: DataSource<AppState>,
+        private val dataSourceLocal: DataSourceLocal<List<DataModel>>
+) : BaseViewModel<AppState>() {
 
     private val _navigateToSelectedWord = MutableLiveData<DataModel?>()
     val navigateToSelectedWord: LiveData<DataModel?>
@@ -25,6 +29,7 @@ class MainFragmentViewModel(
             when (val state = dataSourceRemote.getData(word)) {
                 is AppState.Success -> {
                     _results.value = state.data
+                    state.data?.get(0)?.let { dataSourceLocal.saveToDB(it) }
                 }
             }
         }
