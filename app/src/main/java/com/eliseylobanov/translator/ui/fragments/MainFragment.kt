@@ -1,10 +1,8 @@
 package com.eliseylobanov.translator.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.view.*
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eliseylobanov.translator.R
 import com.eliseylobanov.translator.databinding.FragmentMainBinding
@@ -26,7 +24,7 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
         binding.viewmodel = viewModel
 
         val adapter = MainAdapter(MainAdapter.OnClickListener {
-            Toast.makeText(requireContext(), "Item clicked", Toast.LENGTH_SHORT).show()
+            viewModel.displayWordDetails(it)
         })
 
         binding.mainActivityRecyclerview.layoutManager = LinearLayoutManager(requireContext())
@@ -41,6 +39,16 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
             })
             searchDialogFragment.show(requireActivity().supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
         }
+
+        viewModel.navigateToSelectedWord.observe(viewLifecycleOwner, {
+            if (null != it) {
+                this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+                viewModel.displayWordDetailsComplete()
+            }
+        })
+
+        setHasOptionsMenu(true)
+
         return binding.root
     }
 
@@ -76,6 +84,21 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
         binding.errorTextview.text = error ?: getString(R.string.undefined_error)
         binding.reloadButton.setOnClickListener {
             viewModel.getData("hi")
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_history, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_history -> {
+                this.findNavController().navigate(MainFragmentDirections.actionMainFragmentToHistoryFragment())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
