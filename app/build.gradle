@@ -40,6 +40,8 @@ android {
 
 
 dependencies {
+    implementation project(Modules.model)
+    implementation project(Modules.repository)
 
     implementation Kotlin.stdlib
     implementation Kotlin.core
@@ -50,10 +52,6 @@ dependencies {
     testImplementation TestImpl.junit
     androidTestImplementation TestImpl.runner
     androidTestImplementation TestImpl.espresso
-
-    implementation Retrofit.retrofit
-    implementation Retrofit.converter_gson
-    implementation Retrofit.logging_interceptor
 
     implementation UI.fragment
     implementation UI.navigation

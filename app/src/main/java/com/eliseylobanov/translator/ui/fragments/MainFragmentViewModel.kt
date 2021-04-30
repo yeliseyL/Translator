@@ -3,16 +3,16 @@ package com.eliseylobanov.translator.ui.fragments
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.eliseylobanov.translator.model.AppState
-import com.eliseylobanov.translator.model.darasource.DataSource
-import com.eliseylobanov.translator.model.darasource.DataSourceLocal
+import com.eliseylobanov.repository.AppState
+import com.eliseylobanov.repository.darasource.DataSource
+import com.eliseylobanov.repository.darasource.DataSourceLocal
 import com.eliseylobanov.translator.model.entities.DataModel
 import com.eliseylobanov.translator.ui.BaseViewModel
 import kotlinx.coroutines.launch
 
 class MainFragmentViewModel(
-        private val dataSourceRemote: DataSource<AppState>,
-        private val dataSourceLocal: DataSourceLocal<List<DataModel>>
+    private val dataSourceRemote: DataSource<AppState>,
+    private val dataSourceLocal: DataSourceLocal<List<DataModel>>
 ) : BaseViewModel<AppState>() {
 
     private val _navigateToSelectedWord = MutableLiveData<DataModel?>()
