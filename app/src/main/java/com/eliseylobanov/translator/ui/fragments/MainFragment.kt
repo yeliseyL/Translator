@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.*
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.eliseylobanov.repository.AppState
 import com.eliseylobanov.translator.R
 import com.eliseylobanov.translator.databinding.FragmentMainBinding
-import com.eliseylobanov.translator.model.AppState
 import com.eliseylobanov.translator.ui.MainAdapter
 import com.eliseylobanov.translator.view.BaseFragment
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -67,7 +67,7 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
                 if (appState.progress != null) {
                     binding.progressBarHorizontal.visibility = View.VISIBLE
                     binding.progressBarRound.visibility = View.GONE
-                    binding.progressBarHorizontal.progress = appState.progress
+                    binding.progressBarHorizontal.progress = appState.progress!!
                 } else {
                     binding.progressBarHorizontal.visibility = View.GONE
                     binding.progressBarRound.visibility = View.VISIBLE

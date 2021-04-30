@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eliseylobanov.translator.model.darasource.DataSourceLocal
+
+import com.eliseylobanov.repository.darasource.DataSourceLocal
 import com.eliseylobanov.translator.model.entities.DataModel
 import kotlinx.coroutines.launch
 
