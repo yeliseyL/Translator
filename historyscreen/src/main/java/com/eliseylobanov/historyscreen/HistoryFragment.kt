@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eliseylobanov.historyscreen.databinding.FragmentHistoryBinding
-import org.koin.android.scope.currentScope
+import com.eliseylobanov.historyscreen.R
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class HistoryFragment : Fragment(R.layout.fragment_history) {
 
-    private val viewModel: HistoryViewModel by lazy { requireActivity().currentScope.get() }
+    private val viewModel: HistoryViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
