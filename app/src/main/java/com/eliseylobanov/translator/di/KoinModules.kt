@@ -11,9 +11,12 @@ import com.eliseylobanov.repository.database.WordDatabase
 import com.eliseylobanov.repository.retrofit.RetrofitImplementation
 
 import com.eliseylobanov.translator.model.entities.DataModel
+import com.eliseylobanov.translator.ui.MainActivity
 
 import com.eliseylobanov.translator.ui.fragments.MainFragmentViewModel
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 fun injectDependencies() = loadModules
@@ -31,7 +34,11 @@ val application = module {
     }
 }
 
-val mainScreen = module { factory { MainFragmentViewModel(get(), get()) } }
+val mainScreen = module {
+    scope(named<MainActivity>()) {
+        viewModel { MainFragmentViewModel(get(), get()) }
+    }
+}
 
 
 
