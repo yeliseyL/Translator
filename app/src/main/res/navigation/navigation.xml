@@ -28,6 +28,6 @@
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.eliseylobanov.translator.ui.fragments.HistoryFragment"
+        android:name="com.eliseylobanov.historyscreen.HistoryFragment"
         android:label="HistoryFragment" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.eliseylobanov.model
+package com.eliseylobanov.historyscreen
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

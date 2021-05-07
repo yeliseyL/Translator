@@ -2,18 +2,27 @@ package com.eliseylobanov.translator.ui.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eliseylobanov.repository.AppState
 import com.eliseylobanov.translator.R
 import com.eliseylobanov.translator.databinding.FragmentMainBinding
+import com.eliseylobanov.translator.di.injectDependencies
 import com.eliseylobanov.translator.ui.MainAdapter
 import com.eliseylobanov.translator.view.BaseFragment
+import com.google.android.play.core.splitinstall.SplitInstallManager
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+import com.google.android.play.core.splitinstall.SplitInstallRequest
 import org.koin.android.viewmodel.ext.android.viewModel
+
+
+private const val HISTORY_ACTIVITY_FEATURE_NAME = "historyScreen"
 
 class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
 
     private lateinit var binding: FragmentMainBinding
+    private lateinit var splitInstallManager: SplitInstallManager
 
     val viewModel: MainFragmentViewModel by viewModel()
 
@@ -95,7 +104,25 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_history -> {
-                this.findNavController().navigate(MainFragmentDirections.actionMainFragmentToHistoryFragment())
+                splitInstallManager = SplitInstallManagerFactory.create(requireContext())
+                val request =
+                    SplitInstallRequest
+                        .newBuilder()
+                        .addModule(HISTORY_ACTIVITY_FEATURE_NAME)
+                        .build()
+
+                splitInstallManager
+                    .startInstall(request)
+                    .addOnSuccessListener {
+                        this.findNavController().navigate(MainFragmentDirections.actionMainFragmentToHistoryFragment())
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(
+                            requireContext(),
+                            "Couldn't download feature: " + it.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 true
             }
             else -> super.onOptionsItemSelected(item)

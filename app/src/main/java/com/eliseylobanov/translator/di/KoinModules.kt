@@ -12,9 +12,15 @@ import com.eliseylobanov.repository.retrofit.RetrofitImplementation
 
 import com.eliseylobanov.translator.model.entities.DataModel
 
-import com.eliseylobanov.translator.ui.fragments.HistoryViewModel
 import com.eliseylobanov.translator.ui.fragments.MainFragmentViewModel
+import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
+
+fun injectDependencies() = loadModules
+
+private val loadModules by lazy {
+    loadKoinModules(listOf(application, mainScreen))
+}
 
 val application = module {
     single<DataSource<AppState>>{ DataSourceRemote(RetrofitImplementation()) }
@@ -25,6 +31,8 @@ val application = module {
     }
 }
 
-val mainscreen = module { factory { MainFragmentViewModel(get(), get()) } }
+val mainScreen = module { factory { MainFragmentViewModel(get(), get()) } }
 
-val historyScreen = module { factory { HistoryViewModel(get()) } }
+
+
+

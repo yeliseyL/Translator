@@ -1,11 +1,11 @@
-package com.eliseylobanov.translator.ui
+package com.eliseylobanov.historyscreen
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.eliseylobanov.translator.databinding.FragmentHistoryItemBinding
+import com.eliseylobanov.historyscreen.databinding.FragmentHistoryItemBinding
 import com.eliseylobanov.translator.model.entities.DataModel
 
 
