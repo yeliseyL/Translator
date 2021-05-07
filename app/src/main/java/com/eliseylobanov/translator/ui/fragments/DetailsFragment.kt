@@ -20,6 +20,4 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binding.word = word
         return binding.root
     }
-
-
 }

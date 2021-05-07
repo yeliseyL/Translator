@@ -8,13 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.eliseylobanov.repository.AppState
 import com.eliseylobanov.translator.R
 import com.eliseylobanov.translator.databinding.FragmentMainBinding
-import com.eliseylobanov.translator.di.injectDependencies
 import com.eliseylobanov.translator.ui.MainAdapter
 import com.eliseylobanov.translator.view.BaseFragment
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.scope.currentScope
 
 
 private const val HISTORY_ACTIVITY_FEATURE_NAME = "historyScreen"
@@ -24,7 +23,7 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
     private lateinit var binding: FragmentMainBinding
     private lateinit var splitInstallManager: SplitInstallManager
 
-    val viewModel: MainFragmentViewModel by viewModel()
+    val viewModel: MainFragmentViewModel by lazy { requireActivity().currentScope.get() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

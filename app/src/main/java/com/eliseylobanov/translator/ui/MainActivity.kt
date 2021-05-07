@@ -6,12 +6,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.eliseylobanov.translator.R
 import com.eliseylobanov.translator.di.injectDependencies
+import com.eliseylobanov.translator.utils.OnlineLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener
-import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
@@ -20,13 +19,31 @@ const val REQUEST_CODE = 3333
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appUpdateManager: AppUpdateManager
+    protected var isNetworkAvailable: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies()
+        subscribeToNetworkChange()
         checkForUpdates()
         setContentView(R.layout.activity_main)
     }
+
+    private fun subscribeToNetworkChange() {
+        OnlineLiveData(this).observe(
+            this,
+            {
+                isNetworkAvailable = it
+                if (!isNetworkAvailable) {
+                    Toast.makeText(
+                        this,
+                        R.string.dialog_message_device_is_offline,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+    }
+
 
     private fun checkForUpdates() {
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
