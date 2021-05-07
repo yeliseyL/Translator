@@ -1,4 +1,4 @@
-package com.eliseylobanov.translator.ui.fragments
+package com.eliseylobanov.historyscreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
