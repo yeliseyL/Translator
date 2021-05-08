@@ -8,4 +8,10 @@
         app:showAsAction="ifRoom"
         android:title="@string/menu_history" />
 
+    <item
+        android:id="@+id/menu_screen_settings"
+        android:title="@string/menu_title_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        app:showAsAction="always"/>
+
 </menu>

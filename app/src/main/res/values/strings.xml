@@ -11,4 +11,5 @@
     <string name="menu_history">History</string>
     <string name="title_historyscreen">History Screen</string>
     <string name="dialog_message_device_is_offline">Device is offline</string>
+    <string name="menu_title_settings">Settings</string>
 </resources>
