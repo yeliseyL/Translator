@@ -1,6 +1,9 @@
 package com.eliseylobanov.translator.ui.fragments
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.*
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
@@ -98,6 +101,8 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_history, menu)
+        menu.findItem(R.id.menu_screen_settings)?.isVisible =
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -105,25 +110,30 @@ class MainFragment : BaseFragment<AppState>(R.layout.fragment_main) {
             R.id.action_history -> {
                 splitInstallManager = SplitInstallManagerFactory.create(requireContext())
                 val request =
-                    SplitInstallRequest
-                        .newBuilder()
-                        .addModule(HISTORY_ACTIVITY_FEATURE_NAME)
-                        .build()
+                        SplitInstallRequest
+                                .newBuilder()
+                                .addModule(HISTORY_ACTIVITY_FEATURE_NAME)
+                                .build()
 
                 splitInstallManager
-                    .startInstall(request)
-                    .addOnSuccessListener {
-                        this.findNavController().navigate(MainFragmentDirections.actionMainFragmentToHistoryFragment())
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(
-                            requireContext(),
-                            "Couldn't download feature: " + it.message,
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+                        .startInstall(request)
+                        .addOnSuccessListener {
+                            this.findNavController().navigate(MainFragmentDirections.actionMainFragmentToHistoryFragment())
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(
+                                    requireContext(),
+                                    "Couldn't download feature: " + it.message,
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
                 true
             }
+            R.id.menu_screen_settings -> {
+                startActivityForResult(Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY), 42)
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
